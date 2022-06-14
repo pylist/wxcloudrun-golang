@@ -84,6 +84,54 @@ func UserInfo(w http.ResponseWriter, r *http.Request) {
 	w.Write(resp)
 }
 
+type TemplateMessage struct {
+	Touser     string
+	TemplateID string
+	Url        string
+	Topcolor   string
+	Data       map[string]TemplateMessageData
+}
+
+type TemplateMessageData struct {
+	Value string
+	Color string
+}
+
+func SenTemplateMessage(w http.ResponseWriter, r *http.Request) {
+	data := TemplateMessage{
+		Touser:     "o_RoU6Dk6QC5dL-r6B2PJP941DTo",
+		TemplateID: "ErYZEVbWCdCCwhvNng455t-BhHlTMW4GokEdCRN6DFE",
+		Data: map[string]TemplateMessageData{
+			"first": {
+				Value: "你的云主机即将到期",
+			},
+			"keyword1": {
+				Value: "下雨的星星",
+			},
+			"keyword2": {
+				Value: "30元套餐",
+			},
+			"keyword3": {
+				Value: "linux",
+			},
+			"keyword4": {
+				Value: "8.8.8.8",
+			},
+			"keyword5": {
+				Value: "2022-06-14",
+			},
+			"remark": {
+				Value: "为了不影响您使用，请您尽快续费！",
+			},
+		},
+	}
+	resp, err := request.POST("https://api.weixin.qq.com/cgi-bin/message/template/send", data)
+	if err != nil {
+		log.Panicln(err)
+	}
+	w.Write(resp)
+}
+
 // modifyCounter 更新计数，自增或者清零
 func modifyCounter(r *http.Request) (int32, error) {
 	action, err := getAction(r)

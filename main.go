@@ -17,6 +17,7 @@ func main() {
 	http.HandleFunc("/api/count", service.CounterHandler)
 	http.HandleFunc("/api/user/list", service.UserList)
 	http.HandleFunc("/api/user/info", service.UserInfo)
+	http.HandleFunc("/api/message/template/send", service.SenTemplateMessage)
 
 	log.Fatal(http.ListenAndServe(":80", nil))
 }

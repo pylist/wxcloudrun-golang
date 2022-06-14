@@ -85,16 +85,16 @@ func UserInfo(w http.ResponseWriter, r *http.Request) {
 }
 
 type TemplateMessage struct {
-	Touser     string
-	TemplateID string
-	Url        string
-	Topcolor   string
-	Data       map[string]TemplateMessageData
+	Touser     string                         `json:"touser"`
+	TemplateID string                         `json:"template_id"`
+	Url        string                         `json:"url"`
+	Topcolor   string                         `json:"topcolor"`
+	Data       map[string]TemplateMessageData `json:"data"`
 }
 
 type TemplateMessageData struct {
-	Value string
-	Color string
+	Value string `json:"value"`
+	Color string `json:"color"`
 }
 
 func SenTemplateMessage(w http.ResponseWriter, r *http.Request) {

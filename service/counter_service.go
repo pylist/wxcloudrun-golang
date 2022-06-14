@@ -76,6 +76,14 @@ func UserList(w http.ResponseWriter, r *http.Request) {
 	w.Write(resp)
 }
 
+func UserInfo(w http.ResponseWriter, r *http.Request) {
+	resp, err := request.POST("https://api.weixin.qq.com/cgi-bin/user/info?openid=o_RoU6JXLjntdzstlakgswiKbPbU&lang=zh_CN", map[string]interface{}{})
+	if err != nil {
+		log.Panicln(err)
+	}
+	w.Write(resp)
+}
+
 // modifyCounter 更新计数，自增或者清零
 func modifyCounter(r *http.Request) (int32, error) {
 	action, err := getAction(r)

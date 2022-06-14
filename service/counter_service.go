@@ -68,7 +68,8 @@ func CounterHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func UserList(w http.ResponseWriter, r *http.Request) {
-	resp, err := request.POST("https://api.weixin.qq.com/cgi-bin/user/get", map[string]interface{})
+	data := make(map[string]interface{})
+	resp, err := request.POST("https://api.weixin.qq.com/cgi-bin/user/get", data)
 	if err != nil {
 		log.Panicln(err)
 	}

@@ -4,11 +4,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"time"
 
 	"wxcloudrun-golang/db/dao"
 	"wxcloudrun-golang/db/model"
+
+	"wxcloudrun-golang/util/request"
 
 	"gorm.io/gorm"
 )
@@ -62,6 +65,14 @@ func CounterHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("content-type", "application/json")
 	w.Write(msg)
+}
+
+func UserList(w http.ResponseWriter, r *http.Request) {
+	resp, err := request.POST("https://api.weixin.qq.com/cgi-bin/user/get", map[string]interface{})
+	if err != nil {
+		log.Panicln(err)
+	}
+	w.Write(resp)
 }
 
 // modifyCounter 更新计数，自增或者清零

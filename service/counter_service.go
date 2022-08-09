@@ -3,6 +3,7 @@ package service
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -67,21 +68,21 @@ func CounterHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(msg)
 }
 
-func UserList(w http.ResponseWriter, r *http.Request) {
+func UserList(c *gin.Context) {
 	data := make(map[string]interface{})
 	resp, err := request.POST("https://api.weixin.qq.com/cgi-bin/user/get", data)
 	if err != nil {
 		log.Panicln(err)
 	}
-	w.Write(resp)
+	c.JSON(200, resp)
 }
 
-func UserInfo(w http.ResponseWriter, r *http.Request) {
+func UserInfo(c *gin.Context) {
 	resp, err := request.POST("https://api.weixin.qq.com/cgi-bin/user/info?openid=o_RoU6JXLjntdzstlakgswiKbPbU&lang=zh_CN", map[string]interface{}{})
 	if err != nil {
 		log.Panicln(err)
 	}
-	w.Write(resp)
+	c.JSON(200, resp)
 }
 
 type TemplateMessage struct {
@@ -97,7 +98,12 @@ type TemplateMessageData struct {
 	Color string `json:"color"`
 }
 
-func SenTemplateMessage(w http.ResponseWriter, r *http.Request) {
+func SenTemplateMessage(c *gin.Context) {
+	var req TemplateMessage
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(200, gin.H{"code": 4000, "message": "请求参数错误"})
+		return
+	}
 	data := TemplateMessage{
 		Touser:     "o_RoU6Dk6QC5dL-r6B2PJP941DTo",
 		TemplateID: "ErYZEVbWCdCCwhvNng455t-BhHlTMW4GokEdCRN6DFE",
@@ -129,7 +135,7 @@ func SenTemplateMessage(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Panicln(err)
 	}
-	w.Write(resp)
+	c.JSON(200, resp)
 }
 
 // modifyCounter 更新计数，自增或者清零
